@@ -5,3 +5,4 @@ setwd(home_dir)
 # Данные ~Google Диск\specialist\ДС\ДС1 (февраль 2018).zip\Данные\Clients.txt
 # Как зовут клиентов мужского пола, у которых двое детей?
 clients <- read.csv('Clients.txt', sep = ';', header = T)
+clients[clients$Gender == 'M' & clients$TotalChildren == 2, c("FirstName", "MiddleName", "LastName")]
