@@ -36,5 +36,23 @@ find_interval <- function(train_data, test_data, x, train_target, test_target){
   }
 }
 
-find_interval(train_df, test_df, train_df$x1, train_df$y, test_df$y)
-  
+#find_interval(train_df, test_df, train_df$x1, train_df$y, test_df$y)
+
+train_df_1 <- train_df[train_df$x1 < 450, ]
+train_df_2 <- train_df[train_df$x1 >= 450 & train_df$x1 < 1550,]
+train_df_3 <- train_df[train_df$x1 > 1550, ]
+train_divided <- list(train_df_1, train_df_2, train_df_3, train_df)
+
+min_rmse <- Inf
+for (i in train_divided){
+  fit_lm <- lm(y ~ ., i)
+  fit_lm <- step(fit_lm, direction ='backward')
+  prediction <- predict(fit_lm, test_df)
+  rmse <- sqrt(sum((test_df$y - prediction)^2))
+  if(rmse < min_rmse){
+    min_rmse <- rmse
+    best_data <- i
+    }
+}
+
+
